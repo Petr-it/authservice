@@ -10,6 +10,34 @@ info:
   title: API
   version: "1.0"
 paths:
+  /v1/refresh:
+    get:
+      consumes:
+      - application/json
+      description: refresh access token
+      parameters:
+      - description: User ID to encode into token
+        in: query
+        name: accesstoken
+        required: true
+        type: string
+      - description: User ID to encode into token
+        in: query
+        name: refreshtoken
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: refresh access token
+      tags:
+      - Token
   /v1/token/new:
     get:
       consumes:
@@ -35,7 +63,13 @@ paths:
     get:
       consumes:
       - application/json
-      description: refresh access token
+      description: get UID
+      parameters:
+      - description: User ID to encode into token
+        in: query
+        name: refreshtoken
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -45,9 +79,9 @@ paths:
             type: string
       security:
       - ApiKeyAuth: []
-      summary: refresh access token
+      summary: get UID
       tags:
-      - Token
+      - UID
 securityDefinitions:
   ApiKeyAuth:
     in: header

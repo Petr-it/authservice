@@ -23,6 +23,50 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/v1/refresh": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "refresh access token",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Token"
+                ],
+                "summary": "refresh access token",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID to encode into token",
+                        "name": "accesstoken",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "User ID to encode into token",
+                        "name": "refreshtoken",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/token/new": {
             "get": {
                 "description": "Create a new access token.",
@@ -62,7 +106,7 @@ const docTemplate = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "refresh access token",
+                "description": "get UID",
                 "consumes": [
                     "application/json"
                 ],
@@ -70,9 +114,18 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Token"
+                    "UID"
                 ],
-                "summary": "refresh access token",
+                "summary": "get UID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID to encode into token",
+                        "name": "refreshtoken",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "ok",

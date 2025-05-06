@@ -10,5 +10,5 @@ import (
 func PrivateRoutes(a *fiber.App) {
 	route := a.Group("/v1")
 
-	route.Get("/refresh", middleware.JWTProtected(), controllers.RefreshToken)
+	route.Get("/uid", middleware.JWTProtected(), controllers.GetUid)
 }

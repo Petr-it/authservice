@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func encryptUID(plaintext string, key []byte) (string, error) {
@@ -35,11 +36,8 @@ func encryptUID(plaintext string, key []byte) (string, error) {
 
 func GenerateNewAccessToken(userID string) (string, error) {
 	secret := os.Getenv("JWT_SECRET_KEY")
-	encryptionKey := []byte(os.Getenv("UID_ENCRYPTION_KEY"))
-
 	minutesCount, _ := strconv.Atoi(os.Getenv("JWT_SECRET_KEY_EXPIRE_MINUTES_COUNT"))
-
-	encryptedUID, _ := encryptUID(userID, encryptionKey)
+	encryptedUID, _ := encryptUID(userID, []byte(os.Getenv("UID_ENCRYPTION_KEY")))
 
 	claims := jwt.MapClaims{
 		"jti": encryptedUID,
@@ -54,4 +52,22 @@ func GenerateNewAccessToken(userID string) (string, error) {
 	}
 
 	return t, nil
+}
+
+func GenerateNewRefreshToken(userID string) (string, string, error) {
+	b := make([]byte, 32)
+
+	_, err := rand.Read(b)
+	if err != nil {
+		return "", "", err
+	}
+
+	t := base64.URLEncoding.EncodeToString([]byte(b))
+
+	hash, err := bcrypt.GenerateFromPassword(b, bcrypt.DefaultCost)
+	if err != nil {
+		return "", "", err
+	}
+
+	return t, string(hash), nil
 }
