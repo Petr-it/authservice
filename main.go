@@ -21,7 +21,7 @@ import (
 // @license.url				http://www.apache.org/licenses/LICENSE-2.0.html
 // @securityDefinitions.apikey	ApiKeyAuth
 // @in							header
-// @name						X-Access-Token
+// @name						Authorization
 // @BasePath					/authservice
 func main() {
 	config := configs.FiberConfig()

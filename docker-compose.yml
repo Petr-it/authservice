@@ -10,7 +10,8 @@ services:
       DB_MAX_IDLE_CONNECTIONS: "10"
       DB_MAX_LIFETIME_CONNECTIONS: "2"
       SERVER_READ_TIMEOUT: "60"
-      JWT_SECRET_KEY: "secret"            
+      JWT_SECRET_KEY: "secret"   
+      UID_ENCRYPTION_KEY: "secret"          
       JWT_SECRET_KEY_EXPIRE_MINUTES_COUNT: "15"  
     ports:
       - "8000:8000"

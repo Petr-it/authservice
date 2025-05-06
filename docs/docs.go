@@ -36,6 +36,43 @@ const docTemplate = `{
                     "Token"
                 ],
                 "summary": "create a new access token",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID to encode into token",
+                        "name": "uid",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/uid": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "refresh access token",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Token"
+                ],
+                "summary": "refresh access token",
                 "responses": {
                     "200": {
                         "description": "ok",
@@ -50,7 +87,7 @@ const docTemplate = `{
     "securityDefinitions": {
         "ApiKeyAuth": {
             "type": "apiKey",
-            "name": "X-Access-Token",
+            "name": "Authorization",
             "in": "header"
         }
     }

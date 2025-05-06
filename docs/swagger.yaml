@@ -15,6 +15,12 @@ paths:
       consumes:
       - application/json
       description: Create a new access token.
+      parameters:
+      - description: User ID to encode into token
+        in: query
+        name: uid
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -25,9 +31,26 @@ paths:
       summary: create a new access token
       tags:
       - Token
+  /v1/uid:
+    get:
+      consumes:
+      - application/json
+      description: refresh access token
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: refresh access token
+      tags:
+      - Token
 securityDefinitions:
   ApiKeyAuth:
     in: header
-    name: X-Access-Token
+    name: Authorization
     type: apiKey
 swagger: "2.0"

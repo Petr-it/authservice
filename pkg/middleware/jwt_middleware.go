@@ -5,15 +5,16 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 
-	jwtMiddleware "github.com/gofiber/jwt/v2"
+	jwtMiddleware "github.com/gofiber/jwt/v3"
 )
 
 func JWTProtected() func(*fiber.Ctx) error {
 	config := jwtMiddleware.Config{
-		SigningKey:   []byte(os.Getenv("JWT_SECRET_KEY")),
-		ContextKey:   "jwt",
-		ErrorHandler: jwtError,
-		TokenLookup:  "header:X-Access-Token",
+		SigningKey:    []byte(os.Getenv("JWT_SECRET_KEY")),
+		ContextKey:    "jwt",
+		ErrorHandler:  jwtError,
+		SigningMethod: "HS512",
+		TokenLookup:   "header:Authorization,cookie:jwt,query:token",
 	}
 
 	return jwtMiddleware.New(config)
