@@ -1,0 +1,43 @@
+services:
+  go-app:
+    container_name: go-app
+    image: authservice/go-app:1.0
+    build: .
+    environment:
+      SERVER_URL: "0.0.0.0:8000"
+      DATABASE_URL: "host=go_db user=postgres password=postgres dbname=authservice sslmode=disable"
+      DB_MAX_CONNECTIONS: "100"
+      DB_MAX_IDLE_CONNECTIONS: "10"
+      DB_MAX_LIFETIME_CONNECTIONS: "2"
+      SERVER_READ_TIMEOUT: "60"
+      JWT_SECRET_KEY: "secret"            
+      JWT_SECRET_KEY_EXPIRE_MINUTES_COUNT: "15"  
+    ports:
+      - "8000:8000"
+    depends_on:
+      - go_db
+  go_db:
+    container_name: go_db
+    image: postgres:13
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: authservice
+    ports:
+      - "19111:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  migrate:
+    image: migrate/migrate
+    depends_on:
+      - go_db
+    command: [
+      "-path", "/migrations",
+      "-database", "postgres://postgres:postgres@go_db:5432/authservice?sslmode=disable",
+      "up"
+    ]
+    volumes:
+      - ./platform/migrations:/migrations
+
+volumes:  
+  pgdata: {}
